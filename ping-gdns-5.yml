@@ -1,0 +1,14 @@
+---
+- name: Ping 8.8.8.8 from managed hosts
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Run ping command 5 times
+      ansible.builtin.command: ping -c 5 8.8.8.8
+      register: ping_result
+      ignore_errors: yes   # 避免 ping 不通直接讓 playbook fail
+
+    - name: Show ping output
+      debug:
+        var: ping_result.stdout
