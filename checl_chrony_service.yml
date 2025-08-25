@@ -1,0 +1,24 @@
+---
+- name: Manage chronyd service
+  hosts: all
+  become: yes
+  gather_facts: no
+
+  tasks:
+    - name: Ensure chrony is installed
+      ansible.builtin.package:
+        name: chrony
+        state: present
+
+    - name: Ensure chronyd service is running and enabled
+      ansible.builtin.service:
+        name: chronyd
+        state: started
+        enabled: yes
+
+    - name: Collect service facts
+      ansible.builtin.service_facts:
+
+    - name: Show chronyd current status
+      debug:
+        msg: "chronyd state: {{ ansible_facts.services['chronyd.service'].state }}"
